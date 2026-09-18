@@ -8,7 +8,7 @@ Everything needed to render the page lives in `index.html` — HTML, CSS, JavaSc
 portrait photos embedded as base64. Open it anywhere and it works, with no folder next to it.
 No build step and no dependencies; the only external request is the Google Fonts stylesheet.
 
-`image/` holds the same five photos as ordinary files. The page does not need them, but they
+`image/` holds the same six photos as ordinary files. The page does not need them, but they
 are useful as the originals, and `og:image` points at one of them so shared links show a
 thumbnail.
 
@@ -16,9 +16,10 @@ thumbnail.
 index.html
 image/          (also provided as image.zip)
   an-nguyen.jpg
+  chung-nguyen.jpg
   dan-tong.jpg
   phu-nguyen.jpg
-  phuong-tra.jpg
+  tra-le.jpg
   tin-to.jpg
 README.md
 ```
@@ -76,7 +77,7 @@ works, as long as the `image/` folder ships with the page. A square image around
 the right size: the existing photos are that size, which is why they stay sharp in both the
 round card avatar and the larger personnel-file view.
 
-Note that all five photos are embedded as base64 inside `index.html`, which is why the page
+Note that all six photos are embedded as base64 inside `index.html`, which is why the page
 renders on its own. If you replace them with file paths, `index.html` and `image/` must
 then travel together.
 
