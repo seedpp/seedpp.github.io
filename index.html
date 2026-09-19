@@ -252,6 +252,14 @@ p:last-child{margin-bottom:0}
   background:var(--seed-crimson);color:#fff;border-radius:var(--r);
   padding:22px 26px;margin-bottom:26px;
 }
+.deadline--open{background:var(--seed-teal)}
+.deadline--open .btn{color:var(--seed-teal)}
+.deadline--open span::before{
+  content:"";display:inline-block;width:8px;height:8px;border-radius:99px;
+  background:#fff;margin-right:9px;vertical-align:middle;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .deadline strong{
   font-family:var(--display);font-size:1.3rem;letter-spacing:-.01em;
   display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-top:6px;
@@ -315,7 +323,12 @@ p:last-child{margin-bottom:0}
   font-family:var(--body);font-weight:400;font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;opacity:.85;
 }
 .c-exp{background:var(--seed-cream);color:#4A4213}
-.c-now{background:var(--seed-teal);color:#fff} /* use for the open intake when one is running */
+.c-now{background:var(--seed-teal);color:#fff}
+.c-now::after{
+  content:"";position:absolute;top:14px;right:16px;width:8px;height:8px;border-radius:99px;
+  background:#fff;animation:pulse 2s ease-in-out infinite;
+}
+.cohort{position:relative}
 .c-soon{
   background:#fff;color:var(--ink-3);box-shadow:inset 0 0 0 1.5px var(--hair);
 }
@@ -409,13 +422,25 @@ p:last-child{margin-bottom:0}
 .tl li:nth-child(1)::before{box-shadow:inset 0 0 0 4px var(--seed-gold)}
 .tl li:nth-child(2)::before{box-shadow:inset 0 0 0 4px var(--seed-orange)}
 .tl li:nth-child(3)::before{box-shadow:inset 0 0 0 4px var(--seed-crimson)}
-.tl li:last-child::before{box-shadow:inset 0 0 0 4px var(--seed-crimson)}
+.tl li:last-child::before{box-shadow:inset 0 0 0 4px var(--seed-teal)}
 .tl b{display:block;font-family:var(--body);font-size:.64rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px;line-height:1.4}
 .tl p{margin:0;font-size:.92rem;color:var(--ink-2);line-height:1.5}
 .tl p strong{color:var(--ink);font-family:var(--display);font-weight:600;letter-spacing:-.01em}
 .tl li:last-child b,
 .tl li:last-child p,
-.tl li:last-child p strong{color:var(--seed-crimson)}
+.tl li:last-child p strong{color:var(--seed-teal)}
+
+/* name history: same timeline, three stops, current one in crimson */
+.tl--names{grid-template-columns:repeat(3,1fr)}
+.tl--names li:nth-child(1)::before{box-shadow:inset 0 0 0 4px var(--seed-cream)}
+.tl--names li:nth-child(2)::before{box-shadow:inset 0 0 0 4px var(--seed-gold)}
+.tl--names li:nth-child(3)::before{box-shadow:inset 0 0 0 4px var(--seed-crimson)}
+.tl--names p{
+  font-family:var(--display);font-weight:600;font-size:1.05rem;line-height:1.32;
+  color:var(--ink);letter-spacing:-.01em;
+}
+.tl--names li:nth-child(3) b,
+.tl--names li:nth-child(3) p{color:var(--seed-crimson)}
 .history-block{margin-top:clamp(38px,5vw,58px)}
 
 /* ============================================================
@@ -536,6 +561,102 @@ p:last-child{margin-bottom:0}
 .bio-btn span{display:inline-block;transition:transform .2s}
 .bio-btn:hover{color:var(--seed-crimson)}
 .bio-btn:hover span{transform:translateX(4px)}
+
+/* ============================================================
+   K5 ANNOUNCEMENT
+   ============================================================ */
+.ann{
+  position:fixed;inset:0;z-index:95;display:none;align-items:center;justify-content:center;padding:20px;
+}
+.ann.is-open{display:flex}
+.ann-veil{position:absolute;inset:0;background:rgba(20,24,27,.45);backdrop-filter:blur(4px);animation:fadeIn .25s ease}
+.ann-card{
+  position:relative;width:min(520px,100%);background:#fff;border-radius:26px;overflow:hidden;
+  box-shadow:0 48px 90px -34px rgba(20,24,27,.55);
+  animation:annIn .5s cubic-bezier(.2,1.2,.3,1);
+  max-height:88vh;overflow-y:auto;
+}
+@keyframes annIn{
+  0%{opacity:0;transform:translateY(26px) scale(.94)}
+  60%{opacity:1;transform:translateY(-5px) scale(1.012)}
+  100%{opacity:1;transform:none}
+}
+.ann.is-closing .ann-card{animation:annOut .2s ease forwards}
+.ann.is-closing .ann-veil{animation:fadeOut .2s ease forwards}
+@keyframes annOut{to{opacity:0;transform:translateY(14px) scale(.97)}}
+@keyframes fadeOut{to{opacity:0}}
+.ann-top{
+  position:relative;overflow:hidden;color:#fff;padding:26px clamp(24px,4vw,34px) 24px;
+  background:linear-gradient(120deg,#1D7D9E 0%,#2C93A8 32%,#D61C4E 76%,#F77E21 100%);
+  background-size:220% 220%;
+  animation:annShift 9s ease-in-out infinite;
+}
+@keyframes annShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.ann-glow{
+  position:absolute;top:-70px;right:-50px;width:190px;height:190px;border-radius:999px;
+  background:radial-gradient(circle,rgba(254,249,167,.55) 0%,rgba(254,249,167,0) 70%);
+  animation:annFloat 7s ease-in-out infinite;pointer-events:none;
+}
+@keyframes annFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-14px,16px) scale(1.12)}}
+.ann-confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.ann-confetti i{
+  position:absolute;top:-14px;width:7px;height:7px;opacity:.95;
+  animation:annFall linear forwards;
+}
+@keyframes annFall{
+  0%{transform:translateY(-14px) rotate(0);opacity:1}
+  100%{transform:translateY(190px) rotate(520deg);opacity:0}
+}
+.ann-live{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--body);font-size:.64rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  opacity:.92;margin-bottom:12px;
+}
+.ann-live i{width:8px;height:8px;border-radius:99px;background:#fff;animation:pulse 2s ease-in-out infinite}
+.ann-top h3{font-size:clamp(1.5rem,3vw,2rem);color:#fff;margin-bottom:8px}
+.ann-dates{font-family:var(--body);font-size:.92rem;opacity:.92;margin:0}
+.ann-body{padding:24px clamp(24px,4vw,34px) clamp(26px,4vw,32px)}
+.ann-body > p{font-size:.98rem;color:var(--ink-2);margin:0 0 18px}
+.ann-slots{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:10px}
+.ann-slots li{
+  display:flex;align-items:baseline;gap:12px;padding:12px 16px;
+  border:1px solid var(--hair);border-radius:12px;background:var(--paper-2);
+  opacity:0;animation:annRow .45s cubic-bezier(.2,.8,.3,1) forwards;
+  transition:transform .18s,border-color .18s;
+}
+.ann-slots li:nth-child(1){animation-delay:.22s}
+.ann-slots li:nth-child(2){animation-delay:.32s}
+.ann-slots li:nth-child(3){animation-delay:.42s}
+.ann-slots li:not(.is-closed):hover{transform:translateX(3px);border-color:var(--seed-teal)}
+@keyframes annRow{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+.ann-slots b{
+  font-family:var(--display);font-weight:600;font-size:1.3rem;letter-spacing:-.015em;
+  min-width:36px;font-variant-numeric:tabular-nums;color:var(--seed-teal);
+}
+.ann-slots span{font-size:.95rem;color:var(--ink)}
+.ann-slots small{display:block;font-size:.76rem;color:var(--ink-3);margin-top:2px}
+.ann-slots li.is-closed{background:#fff}
+.ann-slots li.is-closed b{
+  font-family:var(--body);font-size:.68rem;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);min-width:56px;
+}
+.ann-slots li.is-closed span{color:var(--ink-3)}
+.ann-actions{display:flex;gap:10px;flex-wrap:wrap}
+.ann-actions .btn{flex:1;justify-content:center;min-width:160px}
+.ann-actions .btn--red{animation:annNudge 2.8s ease-in-out 1.4s infinite}
+@keyframes annNudge{0%,88%,100%{transform:none}92%{transform:scale(1.035)}96%{transform:scale(.995)}}
+.ann-later{
+  background:transparent;border:0;cursor:pointer;width:100%;margin-top:16px;padding:4px;
+  font-family:var(--body);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);transition:color .18s;
+}
+.ann-later:hover{color:var(--ink)}
+.ann-close{
+  position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.15);color:#fff;
+  cursor:pointer;font-size:18px;line-height:1;transition:background .18s,transform .18s;
+}
+.ann-close:hover{background:rgba(255,255,255,.3);transform:rotate(90deg)}
 
 /* ============================================================
    PERSONNEL FILE (dossier modal)
@@ -738,6 +859,8 @@ footer{border-top:1px solid var(--hair);padding:38px 0}
   .cohort{min-width:calc(50% - 6px);flex:1}
 }
 @media (prefers-reduced-motion:reduce){
+  .ann-top{animation:none;background:var(--seed-teal)}
+  .ann-confetti,.ann-glow{display:none}
   *{animation-duration:.001s!important;transition-duration:.001s!important}
   html{scroll-behavior:auto}
   .rv{opacity:1;transform:none}
@@ -782,7 +905,7 @@ footer{border-top:1px solid var(--hair);padding:38px 0}
         review paper, the journal choice, and the reviewers' feedback.
       </p>
       <div class="hero-actions">
-        <a class="btn btn--red" href="#program">Apply for an intake</a>
+        <a class="btn btn--red" href="#program">Apply for K5 · open until 20 Oct</a>
       </div>
     </div>
   </div>
@@ -833,12 +956,12 @@ footer{border-top:1px solid var(--hair);padding:38px 0}
       <p class="lede">Everything a cohort agrees to before the first draft — the paper, the authorship, the deadlines and who supervises what.</p>
     </div>
 
-    <div class="deadline rv" id="apply">
+    <div class="deadline deadline--open rv" id="apply">
       <div>
-        <span>Applications closed (COB)</span>
-        <strong>Expired <em>— Write to ask about the next intake</em></strong>
+        <span>K5 applications open</span>
+        <strong>20/09/2026 &ndash; 20/10/2026 <em>— Closing at COB on 20 October</em></strong>
       </div>
-      <a class="btn" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=dr.an.nguyen.ats@gmail.com&amp;su=Seed%20Publications%20Program%20%E2%80%94%20enquiry" target="_blank" rel="noopener">Email your application</a>
+      <a class="btn" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=dr.an.nguyen.ats@gmail.com&amp;su=K5%20Application%20%E2%80%94%20Seed%20Publications%20Program&amp;body=Dear%20Dr%20An%20Nguyen%2C%0A%0AI%20would%20like%20to%20apply%20for%20the%20K5%20intake%20of%20the%20Seed%20Publications%20Program.%0A%0AFull%20name%3A%0ACurrent%20position%20/%20level%20of%20study%3A%0AInstitution%3A%0AField%20applied%20for%20%28Social%20Sciences%20/%20Computer%20Sciences%29%3A%0AEnglish%20proficiency%20%28IELTS%205.5%20or%20equivalent%29%3A%0A%0AInitial%20idea%20or%20topic%3A%0A%0A%0AMy%20updated%20CV%20is%20attached.%0A%0AKind%20regards%2C%0A" target="_blank" rel="noopener">Email your application</a>
     </div>
 
     <div class="acc rv">
@@ -900,10 +1023,11 @@ footer{border-top:1px solid var(--hair);padding:38px 0}
       <details>
         <summary><em>06</em>Positions and timeline<span class="plus" aria-hidden="true"></span></summary>
         <div class="body">
-          <p>The number of positions differs from intake to intake. Commonly:</p>
+          <p>The number of positions differs from intake to intake. For <strong>K5</strong>:</p>
           <ul>
-            <li>Social Sciences: 04 positions, individual or group.</li>
-            <li>Business &amp; Economics: 04 positions, individual or group.</li>
+            <li><strong>Social Sciences:</strong> 02 positions, individual or group.</li>
+            <li><strong>Computer Sciences:</strong> 01 position, individual or group.</li>
+            <li><strong>Business &amp; Economics:</strong> not open for this intake. The field will return in a later cohort.</li>
           </ul>
           <p>The proposed timeline is a first draft of each manuscript within six months. The starting time is negotiable.</p>
         </div>
@@ -916,7 +1040,7 @@ footer{border-top:1px solid var(--hair);padding:38px 0}
             <li>Your updated CV.</li>
             <li>Your initial idea or topic — a full proposal is not needed.</li>
           </ul>
-          <p>Applications for the 26/01/2026 intake have closed, and late applications are not considered — email to ask when the next intake opens. Questions are welcome, and you are welcome to share this with your networks. Further details: <a href="https://www.academictutoringservices.com.au/?fbclid=IwY2xjawTmkvxwZG9mBWV4dG4DYWVtAjEwAHNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR5V-FhSlkzXA1so4M_yv6RveGFA0ux_SKhFCrlyDhvUP_S4mZ7AnujxBg_vsw_aem_o3Q5faOLYYcoDenYwNLhqQ" target="_blank" rel="noopener">academictutoringservices.com.au</a></p>
+          <p>Applications for <strong>K5</strong> are open from 20/09/2026 until COB on 20/10/2026, and late applications are not considered. Questions are welcome, and you are welcome to share this with your networks. Further details: <a href="https://www.academictutoringservices.com.au/?fbclid=IwY2xjawTmkvxwZG9mBWV4dG4DYWVtAjEwAHNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR5V-FhSlkzXA1so4M_yv6RveGFA0ux_SKhFCrlyDhvUP_S4mZ7AnujxBg_vsw_aem_o3Q5faOLYYcoDenYwNLhqQ" target="_blank" rel="noopener">academictutoringservices.com.au</a></p>
         </div>
       </details>
     </div>
@@ -928,11 +1052,12 @@ footer{border-top:1px solid var(--hair);padding:38px 0}
   <div class="wrap">
     <div class="section-head rv">
       <p class="eyebrow">Steps into the program</p>
-      <h2>Four intakes so far. Open one to see who is inside.</h2>
+      <h2>Four intakes so far, and K5 is now open.</h2>
       <p class="lede">Each cohort is called a K, numbered in the order it started. Open a cohort to see its fields, groups and method.</p>
     </div>
     <div class="cohorts rv" id="cohortRow"></div>
     <div class="legend">
+      <span><i style="background:var(--seed-teal)"></i>Open for applications</span>
       <span><i style="background:var(--seed-cream)"></i>Intake closed</span>
       <span><i style="background:#fff;box-shadow:inset 0 0 0 1.5px var(--hair)"></i>Coming</span>
     </div>
@@ -1104,8 +1229,8 @@ footer{border-top:1px solid var(--hair);padding:38px 0}
           <p><strong>K3</strong> runs in Computer Sciences, Business &amp; Economics and Social Sciences at once — 27 awardees.</p>
         </li>
         <li>
-          <b>Current</b>
-          <p><strong>K4</strong> has closed applications and its awardees are writing. <strong>K5–K7</strong> are coming.</p>
+          <b>20 Sep 2026 · now open</b>
+          <p><strong>K5</strong> opens for applications: 2 places in Social Sciences, 1 in Computer Sciences.</p>
           </li>
         </ul>
       </div>
@@ -1317,13 +1442,13 @@ footer{border-top:1px solid var(--hair);padding:38px 0}
       <div>
         <h2>Send your CV and your idea.</h2>
         <p style="margin-bottom:16px">
-          Applications go directly to Dr An Nguyen. The 26/01/2026 intake has closed, so write and ask
-          when the next one opens — K5, K6 and K7 are on the way.
+          Applications go directly to Dr An Nguyen, and K5 closes at COB on 20 October 2026. Three
+          places are open: two in Social Sciences and one in Computer Sciences.
         </p>
         <a class="mail" href="mailto:dr.an.nguyen.ats@gmail.com">dr.an.nguyen.ats@gmail.com</a>
       </div>
       <div class="contact-actions">
-        <a class="btn btn--red" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=dr.an.nguyen.ats@gmail.com&amp;su=Seed%20Publications%20Program%20%E2%80%94%20enquiry" target="_blank" rel="noopener">Email your application</a>
+        <a class="btn btn--red" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=dr.an.nguyen.ats@gmail.com&amp;su=K5%20Application%20%E2%80%94%20Seed%20Publications%20Program&amp;body=Dear%20Dr%20An%20Nguyen%2C%0A%0AI%20would%20like%20to%20apply%20for%20the%20K5%20intake%20of%20the%20Seed%20Publications%20Program.%0A%0AFull%20name%3A%0ACurrent%20position%20/%20level%20of%20study%3A%0AInstitution%3A%0AField%20applied%20for%20%28Social%20Sciences%20/%20Computer%20Sciences%29%3A%0AEnglish%20proficiency%20%28IELTS%205.5%20or%20equivalent%29%3A%0A%0AInitial%20idea%20or%20topic%3A%0A%0A%0AMy%20updated%20CV%20is%20attached.%0A%0AKind%20regards%2C%0A" target="_blank" rel="noopener">Email your application</a>
         <a class="btn" href="https://www.academictutoringservices.com.au/?fbclid=IwY2xjawTmkvxwZG9mBWV4dG4DYWVtAjEwAHNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR5V-FhSlkzXA1so4M_yv6RveGFA0ux_SKhFCrlyDhvUP_S4mZ7AnujxBg_vsw_aem_o3Q5faOLYYcoDenYwNLhqQ" target="_blank" rel="noopener">Visit ATS</a>
       </div>
     </div>
@@ -1338,6 +1463,33 @@ footer{border-top:1px solid var(--hair);padding:38px 0}
     <p><a href="mailto:dr.an.nguyen.ats@gmail.com">dr.an.nguyen.ats@gmail.com</a></p>
   </div>
 </footer>
+
+<div class="ann" id="ann" role="dialog" aria-modal="true" aria-labelledby="annTitle">
+  <div class="ann-veil" data-ann-close></div>
+  <div class="ann-card">
+    <div class="ann-top">
+      <span class="ann-confetti" aria-hidden="true"></span>
+      <span class="ann-glow" aria-hidden="true"></span>
+      <p class="ann-live"><i></i>Applications open</p>
+      <h3 id="annTitle">K5 is now open</h3>
+      <p class="ann-dates">20 September &ndash; 20 October 2026, closing at COB</p>
+      <button class="ann-close" id="annClose" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="ann-body">
+      <p>Three places across two fields. Send your updated CV and your initial idea to Dr An Nguyen. A full proposal is not needed.</p>
+      <ul class="ann-slots">
+        <li><b>02</b><span>Social Sciences<small>Individual or group</small></span></li>
+        <li><b>01</b><span>Computer Sciences<small>Individual or group</small></span></li>
+        <li class="is-closed"><b>Closed</b><span>Business &amp; Economics<small>Not open for this intake</small></span></li>
+      </ul>
+      <div class="ann-actions">
+        <a class="btn btn--red" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=dr.an.nguyen.ats@gmail.com&amp;su=K5%20Application%20%E2%80%94%20Seed%20Publications%20Program&amp;body=Dear%20Dr%20An%20Nguyen%2C%0A%0AI%20would%20like%20to%20apply%20for%20the%20K5%20intake%20of%20the%20Seed%20Publications%20Program.%0A%0AFull%20name%3A%0ACurrent%20position%20/%20level%20of%20study%3A%0AInstitution%3A%0AField%20applied%20for%20%28Social%20Sciences%20/%20Computer%20Sciences%29%3A%0AEnglish%20proficiency%20%28IELTS%205.5%20or%20equivalent%29%3A%0A%0AInitial%20idea%20or%20topic%3A%0A%0A%0AMy%20updated%20CV%20is%20attached.%0A%0AKind%20regards%2C%0A" target="_blank" rel="noopener">Email your application</a>
+        <a class="btn btn--ghost" href="#program" data-ann-close>See the details</a>
+      </div>
+      <button class="ann-later" id="annLater" type="button">Maybe later</button>
+    </div>
+  </div>
+</div>
 
 <div class="modal" id="fileModal" role="dialog" aria-modal="true" aria-labelledby="fileName">
   <div class="modal-veil" data-close></div>
@@ -1471,13 +1623,29 @@ const COHORTS = [
       Sciences is not part of this intake, and from K4 onwards PhD candidates are no longer eligible.</p>`
   },
   {
-    id:"K5", tone:"c-soon", flag:"var(--hair)", tag:"Coming",
-    title:"K5 — Coming",
-    kicker:"Not yet open",
-    groups:[],
-    text:`<p>K5 is coming. Positions, fields and start date will be announced before the intake opens —
-      commonly four positions in Social Sciences and four in Business and Economics.</p>
-      <p>Email Dr An Nguyen to be told when it opens.</p>`
+    id:"K5", tone:"c-now", flag:"var(--seed-teal)", tag:"Open · 2026",
+    title:"K5 — Applications open",
+    kicker:"20/09/2026 until COB 20/10/2026",
+    groups:[
+      { name:"Social Sciences", code:"K5.SS", rows:[
+        ["Positions","02","good"],
+        ["Format","Individual or group"],
+        ["Status","Accepting applications","good"]
+      ]},
+      { name:"Computer Sciences", code:"K5.CS", rows:[
+        ["Positions","01","good"],
+        ["Format","Individual or group"],
+        ["Status","Accepting applications","good"]
+      ]},
+      { name:"Business &amp; Economics", code:"K5.BE", rows:[
+        ["Positions","Closed","muted"],
+        ["Status","Not open for this intake","muted"]
+      ]}
+    ],
+    text:`<p>Three places are open across two fields, each of which can be taken individually or as a
+      group. Business and Economics is not open for this intake; it will return in a later one.</p>
+      <p>Send your updated CV and your initial idea to Dr An Nguyen before COB on 20 October 2026.
+      A full proposal is not needed, and late applications are not considered.</p>`
   },
   {
     id:"K6", tone:"c-soon", flag:"var(--hair)", tag:"Coming",
@@ -1658,6 +1826,50 @@ showPubs("pub");   // Published is the view you land on
     });
   },{threshold:.25});
   go.observe(block);
+})();
+
+/* ============================ K5 ANNOUNCEMENT ============================ */
+(function(){
+  const ann = document.getElementById("ann");
+  if(!ann) return;
+  function close(){
+    ann.classList.add("is-closing");
+    document.body.style.overflow = "";
+    setTimeout(()=>{
+      ann.classList.remove("is-open","is-closing");
+    }, 220);
+  }
+  setTimeout(()=>{                          // shown on every visit
+    ann.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+    document.getElementById("annClose").focus();
+    if(!reduce) confetti();
+  }, 800);
+
+  function confetti(){
+    const wrap = ann.querySelector(".ann-confetti");
+    if(!wrap) return;
+    const colors = ["#FEF9A7","#FAC213","#F77E21","#D61C4E","#1D7D9E","#ffffff"];
+    wrap.innerHTML = "";
+    for(let i = 0; i < 34; i++){
+      const bit = document.createElement("i");
+      bit.style.left = Math.random() * 100 + "%";
+      bit.style.background = colors[i % colors.length];
+      bit.style.animationDelay = (Math.random() * .5) + "s";
+      bit.style.animationDuration = (1.6 + Math.random() * 1.4) + "s";
+      bit.style.width = bit.style.height = (5 + Math.random() * 5) + "px";
+      if(i % 3 === 0) bit.style.borderRadius = "99px";
+      wrap.appendChild(bit);
+    }
+    setTimeout(()=>{ wrap.innerHTML = ""; }, 3200);
+  }
+  ann.querySelectorAll("[data-ann-close]").forEach(el=>el.addEventListener("click", close));
+  document.getElementById("annClose").addEventListener("click", close);
+  document.getElementById("annLater").addEventListener("click", close);
+  ann.querySelector(".btn--red").addEventListener("click", close);
+  document.addEventListener("keydown", e=>{
+    if(e.key === "Escape" && ann.classList.contains("is-open")) close();
+  });
 })();
 
 /* ============================ PERSONNEL FILE ============================ */
